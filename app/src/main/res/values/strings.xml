@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Monthly Report</string>
+    <string name="addProduct">Добавить</string>
+    <string name="enterQuantity">Введите количество</string>
+    <string name="productAddTextView">Продукт добавлен</string>
+    <string name="selectProduct">Выберите продукт</string>
+</resources>
