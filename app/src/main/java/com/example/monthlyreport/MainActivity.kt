@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.monthlyreport.databinding.ActivityMainBinding
 import com.example.monthlyreport.db.MainDb
 import com.example.monthlyreport.db.Product
@@ -19,11 +21,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var db = MainDb.getDb(this)
+        //val db = MainDb.getDb(this)
 
         //Database close, не открывается бд нужно решить
         
         Thread {
+            val db = MainDb.getDb(this)
+
             db.getProductDao().insertProduct(Product(null,"fds",24))
             db.getProductDao().insertProduct(Product(null,"gdfs",24))
 
