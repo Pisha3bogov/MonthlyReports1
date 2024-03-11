@@ -11,7 +11,7 @@ data class Report(
     @ColumnInfo(name = "day")
     var day: Int,
     @ColumnInfo(name = "month")
-    var month: String,
+    var month: Int,
     @ColumnInfo(name = "year")
     var year: Int,
     @ColumnInfo(name = "id_product")
