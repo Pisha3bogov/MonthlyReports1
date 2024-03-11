@@ -3,6 +3,7 @@ package com.example.monthlyreport
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,9 +15,14 @@ import com.example.monthlyreport.db.Report
 import java.util.Calendar
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.lang.NullPointerException
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -32,28 +38,32 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
 
         binding.addUserProduct.setOnClickListener {
+
             addReport()
+            Thread.sleep(500)
+            delSelectRep()
+
         }
 
 
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun addReport() {
+    private fun addReport () {
 
         val db = MainDb.getDb(this)
 
         val c = Calendar.getInstance()
 
-        GlobalScope.launch {
-            try {
 
+        GlobalScope.async {
+            try {
 
                 val product: Product =
                     db.getProductDao()
                         .searchByName(binding.spinnerProduct.selectedItem.toString())
 
-                var report = Report(
+                val report = Report(
                     null,
                     c.get(Calendar.DATE).toInt(),
                     c.get(Calendar.MONTH).toInt(),
@@ -68,23 +78,28 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 binding.errorTextView.setText("Продукт добавлен")
                 binding.errorTextView.setTextColor(Color.GREEN)
 
+                true
+
+
             } catch (e: NullPointerException) {
                 binding.errorTextView.setText("Выберите продукт")
                 binding.errorTextView.setTextColor(Color.RED)
+                false
             } catch (e: NumberFormatException) {
                 binding.errorTextView.setText("Введите количество")
                 binding.errorTextView.setTextColor(Color.RED)
+                false
             }
-
 
         }
 
-        //Не работает нужно сделать обнуление полей
+    }
 
-        binding.spinnerProduct.setSelection(0)
-        binding.enterQuantity.setText("")
-
-
+    private fun delSelectRep() {
+        if (binding.errorTextView.text == "Продукт добавлен") {
+            binding.spinnerProduct.setSelection(0)
+            binding.enterQuantity.setText("")
+        }
     }
 
 
