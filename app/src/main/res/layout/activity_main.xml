@@ -7,53 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Spinner
-        android:id="@+id/spinnerProduct"
-        android:layout_width="227dp"
-        android:layout_height="52dp"
-        app:layout_constraintBottom_toTopOf="@+id/enterQuantity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82" />
 
-    <EditText
-        android:id="@+id/enterQuantity"
-        android:layout_width="227dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="56dp"
-        android:ems="10"
-        android:hint="Введите количество"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/addUserProduct"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="Введите количество" />
-
-    <TextView
-        android:id="@+id/errorTextView"
-        android:layout_width="213dp"
-        android:layout_height="25dp"
-        android:textColor="#FF4500"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/addUserProduct"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterQuantity" />
-
-    <Button
-        android:id="@+id/addUserProduct"
-        android:layout_width="185dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="44dp"
-        android:text="@string/addProduct"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="414dp"
+        android:layout_height="81dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/menu_button"
+        />
+
+    <fragment
+        android:id="@+id/fragmentContainerView3"
+        class="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="418dp"
+        android:layout_height="649dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.589" />
+        app:navGraph="@navigation/nav_activity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- android:selectedItemPosition="@={item.selectedItemPosition}" -->

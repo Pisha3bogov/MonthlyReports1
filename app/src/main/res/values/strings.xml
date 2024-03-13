@@ -4,4 +4,6 @@
     <string name="enterQuantity">Введите количество</string>
     <string name="productAddTextView">Продукт добавлен</string>
     <string name="selectProduct">Выберите продукт</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
