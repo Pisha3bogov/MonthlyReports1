@@ -19,9 +19,12 @@ import com.example.monthlyreport.db.Product
 import com.example.monthlyreport.db.Report
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 
@@ -121,19 +124,16 @@ class HomeFragment : Fragment() {
         }
 
     }
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun setTextSpinner(context: Context) {
+    private fun setTextSpinner(context: Context) = runBlocking {
 
         val db = MainDb.getDb(context)
 
         val nameProd: ArrayList<String> = arrayListOf("Выберите продукт")
 
-        GlobalScope.async {
+         launch(Dispatchers.IO) {
 
             db.getProductDao().getAllProduct().forEach {
-                //it.forEach {
                     nameProd.add(it.name)
-                //}
             }
         }
 
