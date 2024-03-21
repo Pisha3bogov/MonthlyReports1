@@ -13,7 +13,7 @@ interface ProductDao {
     @Insert
     fun insertProduct(product: Product)
     @Query("SELECT * FROM PRODUCTS")
-    fun getAllProduct(): Flow<List<Product>>
+    fun getAllProduct(): List<Product>
     @Update
     fun updateProduct(product: Product)
     @Delete

@@ -10,15 +10,18 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.example.monthlyreport.databinding.FragmentHomeBinding
 import com.example.monthlyreport.db.MainDb
 import com.example.monthlyreport.db.Product
 import com.example.monthlyreport.db.Report
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
 import java.util.Calendar
 
 
@@ -80,9 +83,9 @@ class HomeFragment : Fragment() {
 
                 val report = Report(
                     null,
-                    c.get(Calendar.DATE).toInt(),
-                    c.get(Calendar.MONTH).toInt(),
-                    c.get(Calendar.YEAR).toInt(),
+                    c.get(Calendar.DATE),
+                    c.get(Calendar.MONTH),
+                    c.get(Calendar.YEAR),
                     product.id!!,
                     binding.enterQuantity.text.toString().toInt(),
                     product.price
@@ -92,6 +95,7 @@ class HomeFragment : Fragment() {
 
                 binding.errorTextView.setText("Продукт добавлен")
                 binding.errorTextView.setTextColor(Color.GREEN)
+
 
                 true
 
@@ -111,22 +115,25 @@ class HomeFragment : Fragment() {
     }
 
     private fun delSelectRep() {
-        if (binding.errorTextView.text == "Продукт добавлен") {
+        if (binding.errorTextView.text == "Продукт добавлен (30)") {
             binding.spinnerProduct.setSelection(0)
             binding.enterQuantity.setText("")
         }
+
     }
-
-
+    @OptIn(DelicateCoroutinesApi::class)
     private fun setTextSpinner(context: Context) {
 
         val db = MainDb.getDb(context)
 
         val nameProd: ArrayList<String> = arrayListOf("Выберите продукт")
 
-        db.getProductDao().getAllProduct().asLiveData().observe(this) {
-            it.forEach {
-                nameProd.add(it.name)
+        GlobalScope.async {
+
+            db.getProductDao().getAllProduct().forEach {
+                //it.forEach {
+                    nameProd.add(it.name)
+                //}
             }
         }
 

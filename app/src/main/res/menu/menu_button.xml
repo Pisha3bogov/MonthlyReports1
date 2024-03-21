@@ -4,17 +4,17 @@
 
     <item
         android:id="@+id/homeFragment"
-        android:title="Home"
+        android:title="Добавить"
         android:icon="@drawable/ic_home"
         />
     <item
         android:id="@+id/reportFragment"
-        android:title="Report"
+        android:title="Отчёт"
         android:icon="@drawable/ic_report"
         />
     <item
         android:id="@+id/productFragment"
-        android:title="Product"
+        android:title="Редактирование"
         android:icon="@drawable/ic_product"
         />
 </menu>
