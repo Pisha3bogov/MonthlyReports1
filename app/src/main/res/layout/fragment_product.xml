@@ -34,5 +34,29 @@
 
     </ListView>
 
+    <Button
+        android:id="@+id/openAddProductFragment"
+        android:layout_width="148dp"
+        android:layout_height="48dp"
+        android:text="Добавить"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listProd" />
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="69dp"
+        android:layout_height="46dp"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        app:icon="@drawable/ic_update"
+        app:layout_constraintBottom_toTopOf="@+id/listProd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.576"
+        app:layout_constraintStart_toEndOf="@+id/textProduct"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

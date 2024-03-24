@@ -1,6 +1,8 @@
 package com.example.monthlyreport.ui.product
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import com.example.monthlyreport.db.Product
 
 class ProductArrayAdapter(private val context: Context,private val products: List<Product>)
 : ArrayAdapter<Product>(context, R.layout.list_product, products) {
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -28,4 +31,5 @@ class ProductArrayAdapter(private val context: Context,private val products: Lis
 
         return view
     }
+
 }

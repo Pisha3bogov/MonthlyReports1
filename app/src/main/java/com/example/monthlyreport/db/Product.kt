@@ -2,9 +2,10 @@ package com.example.monthlyreport.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "products")
+@Entity(tableName = "products"/*,indices = [Index(value = ["name"], unique = true)]*/)
 data class Product (
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
@@ -13,4 +14,3 @@ data class Product (
     @ColumnInfo(name = "price")
     var price: Int
 )
-

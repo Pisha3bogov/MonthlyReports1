@@ -43,7 +43,6 @@ class HomeFragment : Fragment() {
 
         val root: View = binding.root
 
-
         return root
     }
 
@@ -57,7 +56,7 @@ class HomeFragment : Fragment() {
         binding.addUserProduct.setOnClickListener {
 
             addReport(context)
-            Thread.sleep(500)
+            Thread.sleep(1000)
             delSelectRep()
 
         }
@@ -118,7 +117,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun delSelectRep() {
-        if (binding.errorTextView.text == "Продукт добавлен (30)") {
+        if (binding.errorTextView.text == "Продукт добавлен") {
             binding.spinnerProduct.setSelection(0)
             binding.enterQuantity.setText("")
         }
