@@ -59,19 +59,30 @@ class AddProductFragment : BottomSheetDialogFragment() {
             try {
 
                 if (binding.nameEditText.text.toString() != "") {
-                    val product = Product(
-                        null,
-                        binding.nameEditText.text.toString(),
-                        binding.priceEditText.text.toString().toInt()
-                    )
 
-                    db.getProductDao().insertProduct(product)
+                    if(db.getProductDao().searchByName(binding.nameEditText.text.toString()) == null) {
+                        val product = Product(
+                            null,
+                            binding.nameEditText.text.toString(),
+                            binding.priceEditText.text.toString().toInt()
+                        )
 
-                    parentFragmentManager.beginTransaction().remove(this@AddProductFragment).commit()
+                        db.getProductDao().insertProduct(product)
 
-                    handler.post{
-                        Toast.makeText(context,"Продукт добавлен", Toast.LENGTH_LONG).show()
+                        parentFragmentManager.beginTransaction().remove(this@AddProductFragment)
+                            .commit()
+
+                        binding.nameEditText.text.clear()
+                        binding.priceEditText.text.clear()
+
+                        handler.post {
+                            Toast.makeText(context, "Продукт добавлен", Toast.LENGTH_LONG).show()
+                        }
+                    } else {
+                        binding.errorTextView.setText("Продукт уже существует")
+                        binding.errorTextView.setTextColor(Color.RED)
                     }
+
 
                 }else {
                     binding.errorTextView.setText("Введите название")

@@ -18,4 +18,6 @@ interface ReportDao {
     fun updateReport(report: Report)
     @Delete
     fun deleteReport(report: Report)
+    @Query("SELECT * FROM reports WHERE month LIKE '%' || :month || '%'")
+    fun getRepMoth(month: Int): List<Report>
 }

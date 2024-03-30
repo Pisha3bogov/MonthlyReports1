@@ -68,15 +68,15 @@ class HomeFragment : Fragment() {
     }
 
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun addReport (context: Context) {
+
+    private fun addReport (context: Context) = runBlocking {
 
         val db = MainDb.getDb(context)
 
         val c = Calendar.getInstance()
 
 
-        GlobalScope.async {
+        async(Dispatchers.IO) {
             try {
 
                 val product: Product =
@@ -86,11 +86,11 @@ class HomeFragment : Fragment() {
                 val report = Report(
                     null,
                     c.get(Calendar.DATE),
-                    c.get(Calendar.MONTH),
+                    c.get(Calendar.MONTH) + 1,
                     c.get(Calendar.YEAR),
                     product.id!!,
                     binding.enterQuantity.text.toString().toInt(),
-                    product.price
+                    product.price * binding.enterQuantity.text.toString().toInt()
                 )
 
                 db.getReportDao().insertReport(report)

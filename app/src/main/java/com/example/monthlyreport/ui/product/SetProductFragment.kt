@@ -81,6 +81,8 @@ class SetProductFragment : BottomSheetDialogFragment() {
                     parentFragmentManager.beginTransaction().remove(this@SetProductFragment)
                         .commit()
 
+                    binding.priceEditText.text.clear()
+
                     handler.post {
                         Toast.makeText(context, "Цена изменена", Toast.LENGTH_LONG).show()
                     }
@@ -111,7 +113,8 @@ class SetProductFragment : BottomSheetDialogFragment() {
 
             db.getProductDao().deleteProduct(prod)
 
-            parentFragmentManager.beginTransaction().remove(this@SetProductFragment).commit()
+            parentFragmentManager.beginTransaction().remove(this@SetProductFragment)
+                .commit()
         }
 
         Toast.makeText(context, "Продукт удален", Toast.LENGTH_LONG).show()
