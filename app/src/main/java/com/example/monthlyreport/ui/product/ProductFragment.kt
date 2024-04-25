@@ -3,6 +3,7 @@ package com.example.monthlyreport.ui.product
 import android.R.attr.key
 import android.R.attr.value
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -75,6 +76,7 @@ class ProductFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
     private fun initTab(context: Context) = runBlocking {
 
         val handler = Handler()

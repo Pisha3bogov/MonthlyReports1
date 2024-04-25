@@ -20,4 +20,7 @@ interface ReportDao {
     fun deleteReport(report: Report)
     @Query("SELECT * FROM reports WHERE month LIKE '%' || :month || '%'")
     fun getRepMoth(month: Int): List<Report>
+
+    @Query("SELECT * FROM reports WHERE id_product LIKE '%' || :id || '%' AND month LIKE '%' || :month || '%'")
+    fun getRepId(id: Int, month: Int): List<Report>
 }

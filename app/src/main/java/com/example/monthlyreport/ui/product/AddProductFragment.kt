@@ -48,6 +48,7 @@ class AddProductFragment : BottomSheetDialogFragment() {
 
     }
 
+
     fun addProdDb(context: Context) = runBlocking {
 
         val db = MainDb.getDb(context)
@@ -78,6 +79,7 @@ class AddProductFragment : BottomSheetDialogFragment() {
                         handler.post {
                             Toast.makeText(context, "Продукт добавлен", Toast.LENGTH_LONG).show()
                         }
+
                     } else {
                         binding.errorTextView.setText("Продукт уже существует")
                         binding.errorTextView.setTextColor(Color.RED)

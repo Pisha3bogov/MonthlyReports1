@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="298dp"
-        android:layout_height="110dp"
+        android:layout_height="85dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="16dp">
@@ -20,12 +20,6 @@
             android:text="Название"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/dateReport"
-            android:layout_width="243dp"
-            android:layout_height="wrap_content"
-            android:text="Дата" />
 
         <TextView
             android:id="@+id/countReport"

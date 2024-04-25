@@ -13,8 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class ReportArrayAdapter(private val context: Context, private val reports: List<Report>) :
-    ArrayAdapter<Report>(context, R.layout.list_report, reports) {
+class ReportArrayAdapter(private val context: Context, private val reports: List<ReportDateObj>) : //Был Report
+    ArrayAdapter<ReportDateObj>(context, R.layout.list_report, reports) {
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -23,13 +23,12 @@ class ReportArrayAdapter(private val context: Context, private val reports: List
 
         val view: View = inflater.inflate(R.layout.list_report, null)
 
-        val dateReport: TextView = view.findViewById(R.id.dateReport)
 
         val countReport: TextView = view.findViewById(R.id.countReport)
 
         val allPrice: TextView = view.findViewById(R.id.allPrice)
 
-        val date: String = "Дата: " + reports[position].id_product.toString() + ". " +
+        /*val date: String = "Дата: " + reports[position].id_product.toString() + ". " +
                 reports[position].month.toString() + ". " + reports[position].year.toString()
 
         initProdName(context, view, position)
@@ -40,10 +39,22 @@ class ReportArrayAdapter(private val context: Context, private val reports: List
 
         allPrice.text = "Цена: " + reports[position].price.toString()
 
+        initProdName(context,view,position)
+
+         */
+
+        val prodName: TextView = view.findViewById(R.id.prodName)
+
+        prodName.text = "Название: " + reports[position].name
+
+        countReport.text = "Количество: " + reports[position].quantity.toString()
+
+        allPrice.text = "Цена: " + reports[position].price.toString()
+
         return view
     }
 
-    fun initProdName(context: Context, view: View, position: Int) = runBlocking {
+    /*fun initProdName(context: Context, view: View, position: Int) = runBlocking {
 
         val db = MainDb.getDb(context)
 
@@ -56,4 +67,6 @@ class ReportArrayAdapter(private val context: Context, private val reports: List
         }
 
     }
+
+     */
 }

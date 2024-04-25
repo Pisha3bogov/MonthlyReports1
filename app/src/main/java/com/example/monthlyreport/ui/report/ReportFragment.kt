@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.monthlyreport.databinding.FragmentHomeBinding
 import com.example.monthlyreport.databinding.FragmentReportBinding
@@ -17,6 +18,7 @@ import com.example.monthlyreport.db.Product
 import com.example.monthlyreport.db.Report
 import com.example.monthlyreport.ui.product.ProductArrayAdapter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
@@ -44,17 +46,15 @@ class ReportFragment : Fragment() {
 
         val context = view.context
 
-        initSpinMonth(context)
+        val calendar = Calendar.getInstance()
 
-        initSpinYear(context)
+        initSpinMonth(context, calendar)
 
-        initTab(context, Calendar.MONTH + 1)
+        initSpinYear(context, calendar)
 
-//        initIncome(view.context)
-//
-//        initAmount(view.context)
+        initTab(context, calendar.get(Calendar.MONTH) + 1)
 
-        initSpinMonth(context)
+
 
         binding.monthSpin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -80,9 +80,42 @@ class ReportFragment : Fragment() {
         launch(Dispatchers.IO) {
             val db = MainDb.getDb(context)
 
-            val repArr: List<Report> = db.getReportDao().getRepMoth(month)
+            //val repArr: List<Report> = db.getReportDao().getRepMoth(month)
 
-            val arrayAdapter: ArrayAdapter<Report> = ReportArrayAdapter(context, repArr)
+            //Начало
+
+            val prodList = db.getProductDao().getAllProduct()
+
+            val reportDateObj = prodList.map { product ->
+                ReportDateObj(product.id, product.name , null , null,null)
+            }
+
+            reportDateObj.forEach {reportDateObj ->
+
+                val listIdRep = mutableListOf<Int>()
+
+                var quantity = 0
+
+                var price = 0
+
+                db.getReportDao().getRepId(reportDateObj.id!!,month).forEach{
+                    listIdRep.add(it.id!!)
+                    quantity += it.quantity
+                    price += it.price
+                }
+
+                reportDateObj.id_report = listIdRep
+
+                reportDateObj.quantity = quantity
+
+                reportDateObj.price = price
+            }
+
+            val sortRepDateObj = reportDateObj.sortedBy { it.quantity }.reversed()
+
+            //Конец
+
+            val arrayAdapter: ArrayAdapter<ReportDateObj> = ReportArrayAdapter(context, sortRepDateObj)
 
             var income = 0
 
@@ -109,7 +142,7 @@ class ReportFragment : Fragment() {
 
     }
 
-    private fun initSpinMonth(context: Context) = runBlocking {
+    private fun initSpinMonth(context: Context, calendar: Calendar) = runBlocking {
         val map = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 
         val spinner: Spinner = binding.monthSpin
@@ -120,12 +153,12 @@ class ReportFragment : Fragment() {
 
         spinner.adapter = adapter
 
-        spinner.setSelection(Calendar.MONTH + 1)
+        spinner.setSelection(calendar.get(Calendar.MONTH) + 1)
 
     }
 
-    private fun initSpinYear(context: Context) = runBlocking {
-        val arr = listOf(2024,2025,2026,2027)
+    private fun initSpinYear(context: Context, calendar: Calendar) = runBlocking {
+        val arr = listOf(2024, 2025, 2026, 2027)
 
         val spinner: Spinner = binding.yearSpin
 
@@ -135,8 +168,7 @@ class ReportFragment : Fragment() {
 
         spinner.adapter = adapter
 
-        //spinner.setSelection(Calendar.YEAR)
+        //spinner.setSelection(calendar.get(Calendar.YEAR))
 
     }
-
 }
