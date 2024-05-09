@@ -28,21 +28,6 @@ class ReportArrayAdapter(private val context: Context, private val reports: List
 
         val allPrice: TextView = view.findViewById(R.id.allPrice)
 
-        /*val date: String = "Дата: " + reports[position].id_product.toString() + ". " +
-                reports[position].month.toString() + ". " + reports[position].year.toString()
-
-        initProdName(context, view, position)
-
-        dateReport.text = date
-
-        countReport.text = "Количество: " + reports[position].quantity.toString()
-
-        allPrice.text = "Цена: " + reports[position].price.toString()
-
-        initProdName(context,view,position)
-
-         */
-
         val prodName: TextView = view.findViewById(R.id.prodName)
 
         prodName.text = "Название: " + reports[position].name
@@ -53,20 +38,4 @@ class ReportArrayAdapter(private val context: Context, private val reports: List
 
         return view
     }
-
-    /*fun initProdName(context: Context, view: View, position: Int) = runBlocking {
-
-        val db = MainDb.getDb(context)
-
-        val prodName: TextView = view.findViewById(R.id.prodName)
-
-        launch(Dispatchers.IO) {
-
-            prodName.text = "Название: " + db.getProductDao()
-                .searchById(reports[position].id_product).name
-        }
-
-    }
-
-     */
 }

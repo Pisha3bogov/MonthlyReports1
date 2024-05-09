@@ -1,16 +1,21 @@
 package com.example.monthlyreport.ui.report
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.provider.ContactsContract.Data
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.monthlyreport.R
 import com.example.monthlyreport.databinding.FragmentHomeBinding
 import com.example.monthlyreport.databinding.FragmentReportBinding
 import com.example.monthlyreport.db.MainDb
@@ -25,6 +30,8 @@ import java.util.Calendar
 
 
 class ReportFragment : Fragment() {
+
+    private val dataModel: DataModel by activityViewModels()
 
     private var _binding: FragmentReportBinding? = null
     private val binding get() = _binding!!
@@ -48,13 +55,22 @@ class ReportFragment : Fragment() {
 
         val calendar = Calendar.getInstance()
 
-        initSpinMonth(context, calendar)
+        val detRepFrag = DeteiledReportFragment()
 
-        initSpinYear(context, calendar)
+        val spinnerYear: Spinner = binding.yearSpin
 
-        initTab(context, calendar.get(Calendar.MONTH) + 1)
+        val spinnerMonth: Spinner = binding.monthSpin
 
+        initSpinMonth(context, calendar, spinnerMonth)
 
+        initSpinYear(context, calendar, spinnerYear)
+
+        initTab(context, spinnerMonth.selectedItem.toString().toInt(),
+            spinnerYear.selectedItem.toString().toInt())
+
+        dataModel.month.value = spinnerMonth.selectedItem.toString().toInt()
+
+        dataModel.year.value = spinnerYear.selectedItem.toString().toInt()
 
         binding.monthSpin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -63,7 +79,10 @@ class ReportFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                initTab(context, position)
+                initTab(context, spinnerMonth.selectedItem.toString().toInt(),
+                    spinnerYear.selectedItem.toString().toInt())
+
+                dataModel.month.value = spinnerMonth.selectedItem.toString().toInt()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -71,18 +90,43 @@ class ReportFragment : Fragment() {
             }
         }
 
+        binding.yearSpin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                initTab(context, spinnerMonth.selectedItem.toString().toInt(),
+                    spinnerYear.selectedItem.toString().toInt())
+
+                dataModel.year.value = spinnerYear.selectedItem.toString().toInt()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        }
+
+        binding.listReport.setOnItemClickListener { parent, view, position, id ->
+
+            dataModel.name.value = view.findViewById<TextView>(R.id.prodName).text.toString()
+
+            val textViewName = parent.adapter.getView(position,view,parent).
+            findViewById<TextView>(R.id.prodName)
+
+            detRepFrag.show(parentFragmentManager,textViewName.text.toString())
+
+        }
+
     }
 
-    private fun initTab(context: Context, month: Int) = runBlocking {
+    private fun initTab(context: Context, month: Int, year: Int) = runBlocking {
 
         val handler = Handler()
 
         launch(Dispatchers.IO) {
             val db = MainDb.getDb(context)
-
-            //val repArr: List<Report> = db.getReportDao().getRepMoth(month)
-
-            //Начало
 
             val prodList = db.getProductDao().getAllProduct()
 
@@ -98,7 +142,7 @@ class ReportFragment : Fragment() {
 
                 var price = 0
 
-                db.getReportDao().getRepId(reportDateObj.id!!,month).forEach{
+                db.getReportDao().getRepIdAndMonth(reportDateObj.id!!,month, year).forEach{
                     listIdRep.add(it.id!!)
                     quantity += it.quantity
                     price += it.price
@@ -113,7 +157,6 @@ class ReportFragment : Fragment() {
 
             val sortRepDateObj = reportDateObj.sortedBy { it.quantity }.reversed()
 
-            //Конец
 
             val arrayAdapter: ArrayAdapter<ReportDateObj> = ReportArrayAdapter(context, sortRepDateObj)
 
@@ -142,10 +185,9 @@ class ReportFragment : Fragment() {
 
     }
 
-    private fun initSpinMonth(context: Context, calendar: Calendar) = runBlocking {
-        val map = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+    private fun initSpinMonth(context: Context, calendar: Calendar, spinner: Spinner) = runBlocking {
 
-        val spinner: Spinner = binding.monthSpin
+        val map = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, map)
 
@@ -153,14 +195,14 @@ class ReportFragment : Fragment() {
 
         spinner.adapter = adapter
 
-        spinner.setSelection(calendar.get(Calendar.MONTH) + 1)
+        val currentMonth = map.indexOfFirst { it == calendar.get(Calendar.MONTH) + 1 }
+
+        spinner.setSelection(currentMonth)
 
     }
 
-    private fun initSpinYear(context: Context, calendar: Calendar) = runBlocking {
-        val arr = listOf(2024, 2025, 2026, 2027)
-
-        val spinner: Spinner = binding.yearSpin
+    private fun initSpinYear(context: Context, calendar: Calendar, spinner :Spinner) = runBlocking {
+        val arr = listOf(2023, 2024, 2025, 2026, 2027)
 
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, arr)
 
@@ -168,7 +210,9 @@ class ReportFragment : Fragment() {
 
         spinner.adapter = adapter
 
-        //spinner.setSelection(calendar.get(Calendar.YEAR))
+        val currentYear = arr.indexOfFirst {it == calendar.get(Calendar.YEAR)}
+
+        spinner.setSelection(currentYear)
 
     }
 }

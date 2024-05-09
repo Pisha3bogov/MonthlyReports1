@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import com.example.monthlyreport.R
 import com.example.monthlyreport.db.Product
 

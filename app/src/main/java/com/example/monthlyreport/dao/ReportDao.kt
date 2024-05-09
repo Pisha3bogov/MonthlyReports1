@@ -18,9 +18,12 @@ interface ReportDao {
     fun updateReport(report: Report)
     @Delete
     fun deleteReport(report: Report)
-    @Query("SELECT * FROM reports WHERE month LIKE '%' || :month || '%'")
+    @Query("SELECT * FROM reports WHERE month = :month")
     fun getRepMoth(month: Int): List<Report>
 
-    @Query("SELECT * FROM reports WHERE id_product LIKE '%' || :id || '%' AND month LIKE '%' || :month || '%'")
-    fun getRepId(id: Int, month: Int): List<Report>
+    @Query("SELECT * FROM reports WHERE id_product = :id AND month = :month AND year = :year")
+    fun getRepIdAndMonth(id: Int, month: Int, year: Int): List<Report>
+
+    @Query("SELECT * FROM reports WHERE id = :id")
+    fun getRepId(id: Int) : Report
 }

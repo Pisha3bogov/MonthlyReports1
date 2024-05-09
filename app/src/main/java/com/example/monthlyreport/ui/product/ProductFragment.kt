@@ -15,6 +15,8 @@ import android.widget.TextView
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.example.monthlyreport.R
 import com.example.monthlyreport.databinding.FragmentProductBinding
 import com.example.monthlyreport.db.MainDb
