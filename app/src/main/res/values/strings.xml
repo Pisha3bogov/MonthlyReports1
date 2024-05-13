@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Учёт продукции</string>
+    <string name="app_name">ProductControl</string>
     <string name="addProduct">Добавить</string>
     <string name="enterQuantity">Введите количество</string>
     <string name="productAddTextView">Продукт добавлен</string>

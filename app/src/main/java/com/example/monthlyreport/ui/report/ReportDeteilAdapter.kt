@@ -34,7 +34,7 @@ class ReportDeteilAdapter(
 
         val idReport: TextView = view.findViewById(R.id.idReport)
 
-        val date: String = "Дата: " + reports[position].id_product.toString() + ". " +
+        val date: String = "Дата: " + reports[position].day + ". " +
                 reports[position].month.toString() + ". " + reports[position].year.toString()
 
         initProdName(context, view, position)

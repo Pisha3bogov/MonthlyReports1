@@ -9,20 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import com.example.monthlyreport.databinding.FragmentHomeBinding
 import com.example.monthlyreport.db.MainDb
 import com.example.monthlyreport.db.Product
 import com.example.monthlyreport.db.Report
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
@@ -85,7 +77,7 @@ class HomeFragment : Fragment() {
 
                 val report = Report(
                     null,
-                    c.get(Calendar.DATE),
+                    c.get(Calendar.DAY_OF_MONTH),
                     c.get(Calendar.MONTH) + 1,
                     c.get(Calendar.YEAR),
                     product.id!!,

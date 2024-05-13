@@ -8,7 +8,7 @@ import com.example.monthlyreport.dao.ProductDao
 import com.example.monthlyreport.dao.ReportDao
 import com.example.monthlyreport.dao.UserDao
 
-@Database(entities = [Product::class,Report::class,User::class], version = 1)
+@Database(entities = [Product::class,Report::class,User::class], version = 2)
 abstract class MainDb: RoomDatabase() {
     abstract fun getProductDao(): ProductDao
     abstract fun getReportDao(): ReportDao
